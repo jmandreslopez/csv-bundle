@@ -1,0 +1,11 @@
+services:
+    ad_user_provider:
+        class: Sample\SecurityBundle\Security\User\ADUserProvider
+        arguments: ["@doctrine.orm.entity_manager"]
+    ad.security.authentication.provider:
+        class: Sample\SecurityBundle\Security\Authentication\ADProvider
+        arguments: [%ad_service%, "", @security.user_checker, "", @security.encoder_factory, %security.authentication.hide_user_not_found%]
+    ad.security.authentication.listener:
+       class: Sample\SecurityBundle\Security\Firewall\ADListener
+       parent: security.authentication.listener.abstract
+       abstract: true

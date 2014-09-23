@@ -1,0 +1,30 @@
+Sample\CsvBundle\Entity\MultipleConfigurations:
+    type: entity
+    table: multiple_configurations
+    repositoryClass: Sample\CsvBundle\Entity\MultipleConfigurationsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        value:
+            type: string
+            length: 255
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

@@ -1,0 +1,60 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block container %}
+    <!-- Multiple Headers -->
+    <div id="section-header" class="row">
+        <div class="col-md-12">
+            <h3>Multiple Admin</h3>
+        </div>
+    </div>
+
+    <!-- Multiple Configurations -->
+    <div id="configurations" class="row">
+        <div class="col-md-12">
+            <form id="multiple" role="form">
+                <div class="row configurations">
+                    {{ form_label(form.multipleId, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.multipleId,
+                            {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="row configurations">
+                    {{ form_label(form.topicId, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.topicId,
+                            {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="row configurations">
+                    {{ form_label(form.percentage, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.percentage,
+                            {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="row configurations" style="margin-top: 10px">
+                    <div class="col-md-2">&nbsp;</div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Return Button -->
+    <div class="row">
+        <div class="col-md-2">
+            <a href="{{ path('upload') }}" class="btn btn-primary">Go back</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block documentReady %}
+    /* Save Configurations */
+    sampleMultiple.save('{{ path('multiple_configuration') }}');
+{% endblock %}

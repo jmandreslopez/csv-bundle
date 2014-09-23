@@ -1,0 +1,20 @@
+login:
+    path: /login
+    defaults:
+        _controller: SampleSecurityBundle:Security:login
+
+login_check:
+    path: /admin/login_check
+
+logout:
+    path: /admin/logout
+
+user_admin:
+    path: /admin/user
+    defaults:
+        _controller: SampleSecurityBundle:Security:admin
+
+user_addrole:
+    path: /admin/user/adrole/{id}
+    defaults:
+        _controller: SampleSecurityBundle:Security:addrole

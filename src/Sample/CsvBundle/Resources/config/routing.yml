@@ -1,0 +1,100 @@
+home:
+    path: /
+    defaults:
+        _controller: SampleCsvBundle:Main:index
+
+graph:
+    path: /csv
+    defaults:
+        _controller: SampleCsvBundle:Graph:index
+
+graph_data:
+    path: /csv/ajax/graph
+    defaults:
+        _controller: SampleCsvBundle:Graph:data
+
+graph_export:
+    path: /csv/export/graph
+    defaults:
+        _controller: SampleCsvBundle:Graph:export
+
+data:
+    path: /csv/data
+    defaults:
+        _controller: SampleCsvBundle:Data:index
+
+data_data:
+    path: /csv/ajax/data
+    defaults:
+        _controller: SampleCsvBundle:Data:data
+
+data_export:
+    path: /csv/export/data
+    defaults:
+        _controller: SampleCsvBundle:Data:export
+
+report:
+    path: /csv/report
+    defaults:
+        _controller: SampleCsvBundle:Report:index
+
+report_data:
+    path: /csv/ajax/report
+    defaults:
+        _controller: SampleCsvBundle:Report:data
+
+report_export:
+    path: /csv/export/report
+    defaults:
+        _controller: SampleCsvBundle:Report:export
+
+upload:
+    path: /csv/upload
+    defaults:
+        _controller: SampleCsvBundle:Upload:index
+
+status:
+    path: /csv/status
+    defaults:
+        _controller: SampleCsvBundle:Upload:status
+    methods: [POST]
+
+multiple_dashboard:
+    path: /csv/multiple
+    defaults:
+        _controller: SampleCsvBundle:Multiple:index
+
+multiple_configuration:
+    path: /csv/multiple/configuration
+    defaults:
+        _controller: SampleCsvBundle:Multiple:configuration
+
+sources_dashboard:
+    path: /csv/sources
+    defaults:
+        _controller: SampleCsvBundle:Sources:index
+
+sources_configuration:
+    path: /csv/sources/configuration
+    defaults:
+        _controller: SampleCsvBundle:Sources:configuration
+
+sources_turn:
+    path: /csv/ajax/turn
+    defaults:
+        _controller: SampleCsvBundle:Sources:turn
+
+manager:
+    path: /csv/manager
+    defaults:
+        _controller: SampleCsvBundle:Manager:index
+
+manager_disable:
+    path: /csv/manager/disable
+    defaults:
+        _controller: SampleCsvBundle:Manager:disable
+
+manager_delete:
+    path: /csv/manager/delete
+    defaults:
+        _controller: SampleCsvBundle:Manager:delete

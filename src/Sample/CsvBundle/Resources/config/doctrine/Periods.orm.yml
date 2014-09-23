@@ -1,0 +1,36 @@
+Sample\CsvBundle\Entity\Periods:
+    type: entity
+    table: periods
+    repositoryClass: Sample\CsvBundle\Entity\PeriodsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        label:
+            type: string
+            length: 100
+        month:
+            type: string
+            length: 100
+        year:
+            type: string
+            length: 100
+        isActive:
+            type: boolean
+            column: is_active
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

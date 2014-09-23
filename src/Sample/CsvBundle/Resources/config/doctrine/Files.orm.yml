@@ -1,0 +1,61 @@
+Sample\CsvBundle\Entity\Files:
+    type: entity
+    table: files
+    repositoryClass: Sample\CsvBundle\Entity\FilesRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        fileTypeId:
+            type: integer
+            column: file_type_id
+        sourceId:
+            type: integer
+            column: source_id
+        periodId:
+            type: integer
+            column: period_id
+        name:
+            type: string
+            length: 255
+        path:
+            type: string
+            length: 255
+        delimiter:
+            type: string
+            length: 1
+        status:
+            type: string
+            length: 100
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        fileType:
+            targetEntity: FileTypes
+            joinColumn:
+                name: file_type_id
+                referencedColumnName: id
+        source:
+            targetEntity: Sources
+            joinColumn:
+                name: source_id
+                referencedColumnName: id
+        period:
+            targetEntity: Periods
+            joinColumn:
+                name: period_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

@@ -1,0 +1,44 @@
+Sample\CsvBundle\Entity\General:
+    type: entity
+    table: general
+    repositoryClass: Sample\CsvBundle\Entity\GeneralRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        sourceId:
+            type: integer
+            column: source_id
+        topicId:
+            type: string
+            length: 255
+            column: topic_id
+        topicName:
+            type: string
+            length: 255
+            column: topic_name
+        isActive:
+            type: boolean
+            column: is_active
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        source:
+            targetEntity: Sources
+            joinColumn:
+                name: source_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

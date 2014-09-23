@@ -1,0 +1,201 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block headStyles %}
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.tableTools.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.fixedHeader.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables_bootstrap.css') }}">
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ asset('bundles/samplecsv/css/excanvas.js') }}"></script><![endif]-->
+
+    <!-- jqPlot CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.jqplot.min.css') }}" />
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/select2.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/select2-bootstrap.css') }}" />
+
+    <!-- datePicker CSS -->
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+{% endblock %}
+
+{% block container %}
+    <!-- Graph Custom Settings -->
+    <div id="custom-settings" class="row">
+        <div class="col-md-12">
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Source:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="sources" class="select2 form-control input-sm">
+                                {{ selectOptions.sourceIds|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Franchise:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="franchises" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.franchises|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Topic Name:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="topic-names" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.topicNames|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Topic ID:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="topic-ids" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.topicIds|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Period:</b>
+                        </div>
+                        <div class="col-md-7 setting">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div id="period-start" class="input-group date" >
+                                        <input type="text" class="form-control input-sm" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 setting-to">
+                                    <b>to</b>
+                                </div>
+                                <div class="col-md-3 setting">
+                                    <div class="input-group date" id="period-end">
+                                        <input type="text" class="form-control input-sm" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">&nbsp;</div>
+                        <div class="col-md-1 setting">
+                            <button id="update-settings" class="btn btn-primary btn-sm">
+                                <i class="glyphicon glyphicon-refresh"></i>
+                                <span>Update</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row handle-top">
+        <div id="custom-settings-handle" class="col-md-12">
+            <div><a href="#" data-type="hide">Hide</a></div>
+        </div>
+    </div>
+
+    <!-- DataTable Report -->
+    <div class="row">
+        <div id="datatable-report" class="col-md-12">
+            {% if params.sourceId|raw == "null" %}
+                <p class="text-center">Select a Source first</p>
+            {% else %}
+                <table id="datatable" class="table table-condensed table-hover display cell-border">
+                    <thead>
+                        <tr>
+                            {% for header in headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block documentReady %}
+    /* Custom Settings Handle */
+    sample.customSettingsHandle();
+
+    /* Select2 */
+    sample.customSettings();
+
+    /* dataPicker */
+    sample.datePickerStart('{{ datesDefaults.startDefaultDate|raw }}','{{ datesDefaults.startMaxDate|raw }}');
+    sample.datePickerEnd('{{ datesDefaults.endDefaultDate|raw }}','{{ datesDefaults.endMinDate|raw }}','{{ datesDefaults.endMaxDate|raw }}');
+
+    /* Update Settings */
+    sampleReport.updateSettings('{{ path('report') }}');
+
+    {% if params.sourceId|raw != "null" %}
+        var params = {
+            'sourceId': '{{ params.sourceId|raw }}',
+            'franchise': '{{ params.franchise|raw }}',
+            'topicName': '{{ params.topicName|raw }}',
+            'topicId': '{{ params.topicId|raw }}',
+            'periods': '{{ params.periods|raw }}'
+        };
+        var columns = [
+            {% for header in headers %}
+                { "data": "{{ header }}", "name": "{{ header }}"{% if header != "Price" %}, "orderable": false{% endif %} },
+            {% endfor %}
+        ];
+        dtable.report(
+            params,
+            columns,
+            '{{ path('report_data') }}',
+            '{{ path('report_export') }}',
+            '{{ asset('bundles/samplecsv/images/loading-table.gif') }}'
+        );
+    {% endif %}
+{% endblock %}
+
+{% block bodyScripts %}
+    <!-- DataTable JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.tableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.fixedHeader.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables_bootstrap.js') }}"></script>
+
+    <!-- Select JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/select2.min.js') }}"></script>
+
+    <!-- dataPicker JavaScript -->
+    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block container %}
+    <!-- Pagination Count -->
+    <div id="pagination-count" class="row">
+        <div class="col-md-12 count">
+            <b>Total Files:</b> {{ pagination.getTotalItemCount }}
+        </div>
+    </div>
+
+    <!-- File Manager Table -->
+    <div id="manager" class="row">
+        <div class="col-md-12">
+            <table id="file-manager" class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">{{ knp_pagination_sortable(pagination, 'ID', 'f.id') }}</th>
+                        <th class="col-md-1{% if pagination.isSorted('t.description') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Type', 't.description') }}</th>
+                        <th class="col-md-3{% if pagination.isSorted('s.name') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Source', 's.name') }}</th>
+                        <th class="col-md-1{% if pagination.isSorted('y.label') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Period', 'p.label') }}</th>
+                        <th class="col-md-2{% if pagination.isSorted('f.name') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Filename', 'f.name') }}</th>
+                        <th class="col-md-1{% if pagination.isSorted('f.status') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Status', 'f.status') }}</th>
+                        <th class="col-md-2{% if pagination.isSorted('f.createdAt') %}sorted{% endif %}">{{ knp_pagination_sortable(pagination, 'Created At', 'f.createdAt') }}</th>
+                        <th class="col-md-1">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in pagination %}
+                        <tr>
+                            <td class="col-md-1">{{ file.id }}</td>
+                            <td class="col-md-1">{{ file.description|capitalize }}</td>
+                            <td class="col-md-3">{{ file.name }}</td>
+                            <td class="col-md-1">{{ file.label }}</td>
+                            <td class="col-md-2">{{ file.name }}</td>
+                            <td class="col-md-1">{{ file.status|capitalize }}</td>
+                            <td class="col-md-2">{{ file.createdAt|date }}</td>
+                            <td class="col-md-1 actions">
+                                {% if file.label != 'MULTIPLE' %}
+                                    {% if file.importStatus|capitalize == 'Pending' %}
+                                        <button class="btn btn-primary btn-sm btn-tooltip btn-disable"
+                                            type="button"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            data-id="{{ file.id }}"
+                                            data-name="{{ file.name }}"
+                                            title="Disable file">
+                                                <span class="glyphicon glyphicon-ban-circle"></span>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" disabled="disabled">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    {% elseif file.importStatus|capitalize == 'Done' %}
+                                        <button class="btn btn-primary btn-sm" disabled="disabled">
+                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm btn-tooltip btn-delete"
+                                            type="button"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            data-id="{{ file.id }}"
+                                            data-type="{{ file.description }}"
+                                            data-source="{{ file.name }}"
+                                            data-period="{{ file.label }}"
+                                            title="Delete data">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    {% elseif file.importStatus|capitalize == 'Deleted' %}
+                                        <button class="btn btn-primary btn-sm" disabled="disabled">
+                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" disabled="disabled">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    {% endif %}
+                                {% else %}
+                                    <button class="btn btn-primary btn-sm" disabled="disabled">
+                                        <span class="glyphicon glyphicon-ban-circle"></span>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" disabled="disabled">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination Navigation -->
+    <div id="pagination-navigation" class="row">
+        <div class="col-md-12 navigation" style="text-align: center">
+            {{ knp_pagination_render(pagination, 'SampleCsvBundle:Manager:paginator.bootstrap.html.twig') }}
+        </div>
+    </div>
+
+    {% include 'SampleCsvBundle:Manager:modal.disable.html.twig' %}
+    {% include 'SampleCsvBundle:Manager:modal.delete.html.twig' %}
+{% endblock %}
+
+{% block documentReady %}
+    /* Tooltips */
+    sampleManager.tooltips();
+
+    /* Disable Button */
+    sampleManager.disableButton();
+
+    /* Disable Event */
+    sampleManager.disableEvent(
+        '{{ path('manager_disable') }}',
+        '{{ asset('bundles/samplecsv/images/loading-modal.gif') }}'
+    );
+
+    /* Delete Button */
+    sampleManager.deleteButton();
+
+    /* Delete Event */
+    sampleManager.deleteEvent(
+        '{{ path('manager_delete') }}',
+        '{{ asset('bundles/samplecsv/images/loading-modal.gif') }}'
+    );
+{% endblock %}

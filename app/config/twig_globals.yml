@@ -1,0 +1,3 @@
+twig:
+    globals:
+        menu_sites: %menu_sites%

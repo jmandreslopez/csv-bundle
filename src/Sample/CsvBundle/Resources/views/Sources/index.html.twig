@@ -1,0 +1,81 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block container %}
+    <!-- Source Headers -->
+    <div id="section-header" class="row">
+        <div class="col-md-12">
+            <h3>Sources Configuration</h3>
+        </div>
+    </div>
+
+    <!-- Vendors Table -->
+    <div id="configurations" class="row">
+        <div class="col-md-12">
+            <table id="sources" class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">ID</th>
+                        <th class="col-md-9">Source</th>
+                        <th class="col-md-1 center">Active</th>
+                        <th class="col-md-1 center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr>
+                            <td class="col-md-1 {{ row.class }}">{{ row.sourceId }}</td>
+                            <td class="col-md-9 {{ row.class }}">{{ row.sourceName }}</td>
+                            <td class="col-md-1 {{ row.class }}">{% if row.isActive %}Yes{% else %}No{% endif %}</td>
+                            <td class="col-md-1 actions {{ row.class }}">
+                                <button class="btn btn-primary btn-sm btn-tooltip btn-configure"
+                                    type="button"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    data-source="{{ row.sourceId }}"
+                                    data-topic="{{ row.topicId }}"
+                                    data-price="{{ row.price }}"
+                                    data-name="{{ row.sourceName }}"
+                                    title="Configure">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                </button>
+                                <button class="btn {% if row.isActive %}btn-danger{% else %}btn-success{% endif %} btn-sm btn-tooltip btn-turn"
+                                    type="button"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    data-title="{% if row.isActive %}Disable{% else %}Enable{% endif %} Source"
+                                    data-turn="{% if row.isActive %}disable{% else %}enable{% endif %}"
+                                    data-sourceName="{{ row.sourceName }}"
+                                    title="{% if row.isActive %}Disable{% else %}Enable{% endif %}">
+                                        <span class="glyphicon glyphicon-off"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Return Button -->
+    <div class="row">
+        <div class="col-md-2">
+            <a href="{{ path('upload') }}" class="btn btn-primary">Go back</a>
+        </div>
+    </div>
+
+    {% include 'SampleCsvBundle:Sources:modal.configure.html.twig' %}
+
+    {% include 'SampleCsvBundle:Sources:modal.turn.html.twig' %}
+{% endblock %}
+
+{% block documentReady %}
+    /* Tooltips */
+    sampleSources.tooltips();
+
+    /* Configuration Buttons */
+    sampleSources.configureButtons();
+
+    /* Active/Disable Buttons */
+    sampleSources.configureYes('{{ path('sources_configuration') }}');
+    sampleSources.turnButtons();
+{% endblock %}

@@ -1,0 +1,56 @@
+parameters:
+    export.user: sample@sample.com
+    file.extension: csv
+    knp.rows_per_page: 20
+
+services:
+    csv.importer:
+        class: Sample\CsvBundle\Lib\Importer
+        arguments: ["@avro_csv.reader", "@event_dispatcher", "@avro_case.converter", "@doctrine.orm.entity_manager", "%avro_csv.batch_size%"]
+
+    oneup.upload:
+        class: Sample\CsvBundle\EventListener\UploadListener
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+
+    csv_charts.stacked:
+        class: Sample\CsvBundle\Charts\StackedChart
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.graph:
+        class: Sample\CsvBundle\Functions\Graph
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.data:
+        class: Sample\CsvBundle\Functions\Data
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.report:
+        class: Sample\CsvBundle\Functions\Report
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.upload:
+        class: Sample\CsvBundle\Functions\Upload
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.sources:
+        class: Sample\CsvBundle\Functions\Sources
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.multiple:
+        class: Sample\CsvBundle\Functions\Multiple
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    csv_functions.manager:
+        class: Sample\CsvBundle\Functions\Manager
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"

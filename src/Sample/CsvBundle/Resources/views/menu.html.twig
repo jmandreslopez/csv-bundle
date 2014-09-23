@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li{% if active == 'graph' %} class="active"{% endif %}><a href="{{ path('graph') }}">Graph</a></li>
+    <li{% if active == 'report' %} class="active"{% endif %}><a href="{{ path('report') }}">Report</a></li>
+    <li{% if active == 'upload' %} class="active"{% endif %}><a href="{{ path('upload') }}">Upload</a></li>
+    <li{% if active == 'manager' %} class="active"{% endif %}><a href="{{ path('manager') }}">Manager</a></li>
+</ul>

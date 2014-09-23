@@ -1,0 +1,40 @@
+Sample\CsvBundle\Entity\Log:
+    type: entity
+    table: log
+    repositoryClass: Sample\CsvBundle\Entity\LogRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        logTypeId:
+            type: integer
+            column: log_type_id
+        process:
+            type: string
+            length: 255
+        description:
+            type: text
+        fixed:
+            type: boolean
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        logType:
+            targetEntity: LogTypes
+            joinColumn:
+                name: log_type_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

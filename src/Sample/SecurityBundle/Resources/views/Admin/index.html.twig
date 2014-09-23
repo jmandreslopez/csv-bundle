@@ -1,0 +1,47 @@
+{% extends "::layout.html.twig" %}
+
+{% block container %}
+    {{ include("SampleSecurityBundle:Admin:filter.html.twig", {'form_route': 'user_admin', 'placeholder': 'Username'}) }}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Add Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        {% set userroles = [] %}
+                        {% for role in user.roles %}
+                            {{ role.name }}, &nbsp;
+                            {% set userroles = userroles | merge([role.name]) %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <form class="form-inline" role="form" action="{{ path('user_addrole', {'id': user.id}) }}" method="POST">
+                            <fieldset {% if user.roles|length == roles|length %} disabled {% endif %}>
+                                <div class="form-group">
+                                    <select class="form-control" name="role" >
+                                        {% for role in roles %}
+                                            {% if role.name not in userroles %}
+                                                <option value="{{ role.id }}">{{ role.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-default">Add Role</button>
+                            </fieldset>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(users) }}
+    </div>
+{% endblock %}

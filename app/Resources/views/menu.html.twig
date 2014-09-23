@@ -1,0 +1,63 @@
+<style>
+    @font-face {
+      font-family: big_noodle_titling;
+      src: url('/fonts/big_noodle_titling.ttf');
+    }
+    .unmenu .glyphicon {
+      font-size: 12px;
+    }
+    .unmenu .logo {
+      height: 40px;
+      margin-top: 6px;
+    }
+    .unmenu {
+      background: #041B28;
+    }
+    .unmenu span, .unmenu a {
+      color: #FFFFFF;
+    }
+   .unmenu .site-name {
+     font-family: big_noodle_titling;
+     font-size: 22px;
+
+    }
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top unmenu" role="navigation">
+    <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        {% for site in menu_sites %}
+                        <li><a href="{{ site.url }}">{{ site.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                  <a href="#" class="site-name pull-left"><span>Sample CSV</span></a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-align-justify"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('graph') }}">Graph</a></li>
+                        <li><a href="{{ path('report') }}">Report</a></li>
+                        <li><a href="{{ path('upload') }}">Upload</a></li>
+                        <li><a href="{{ path('manager') }}">Manager</a></li>
+                        <li class="divider"></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('user_admin') }}">Users</a></li>
+                        {% endif %}
+                            <li><a href="{{ path('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ path('login') }}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>          
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

@@ -1,0 +1,204 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block headStyles %}
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.tableTools.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.fixedHeader.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables_bootstrap.css') }}">
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ asset('bundles/samplecsv/css/excanvas.js') }}"></script><![endif]-->
+
+    <!-- jqPlot CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.jqplot.min.css') }}" />
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/select2.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/select2-bootstrap.css') }}" />
+
+    <!-- datePicker CSS -->
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+{% endblock %}
+
+{% block container %}
+    <!-- Graph Custom Settings -->
+    <div id="custom-settings" class="row">
+        <div class="col-md-12">
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Franchise:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="franchises" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.franchises|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Topic Name:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="topic-names" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.topicNames|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Topic ID:</b>
+                        </div>
+                        <div class="col-md-10 setting">
+                            <select id="topic-ids" multiple class="select2 form-control input-sm">
+                                {{ selectOptions.topicIds|raw }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Period:</b>
+                        </div>
+                        <div class="col-md-7 setting">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div id="period-start" class="input-group date" >
+                                        <input type="text" class="form-control input-sm" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 setting-to">
+                                    <b>to</b>
+                                </div>
+                                <div class="col-md-3 setting">
+                                    <div id="period-end" class="input-group date">
+                                        <input type="text" class="form-control input-sm" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row settings">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">&nbsp;</div>
+                        <div class="col-md-1 setting">
+                            <button id="update-settings" class="btn btn-primary btn-sm">
+                                <i class="glyphicon glyphicon-refresh"></i>
+                                <span>Update</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row handle-top">
+        <div id="custom-settings-handle" class="col-md-12">
+            <div><a href="#" data-type="hide">Hide</a></div>
+        </div>
+    </div>
+
+    <!-- Graph Charts -->
+    <div id="charts" class="row">
+        <div id="stacked-chart" class="col-md-12"></div>
+    </div>
+
+    <!-- DataTable Graph -->
+    <div class="row">
+        <div id="datatable-graph" class="col-md-12">
+            <table id="datatable" class="table table-condensed table-hover display cell-border">
+                <thead>
+                    <tr>
+                        <th>Topic Name</th>
+                        <th>Topic ID</th>
+                        <th>Category</th>
+                        <th>Source</th>
+                        {% for period in periods %}
+                            <th>{{ period.label }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block documentReady %}
+    /* Custom Settings Handle */
+    sample.customSettingsHandle();
+
+    /* Select2 */
+    sample.customSettings();
+
+    /* dataPicker */
+    sample.datePickerStart('{{ datesDefaults.startDefaultDate|raw }}','{{ datesDefaults.startMaxDate|raw }}');
+    sample.datePickerEnd('{{ datesDefaults.endDefaultDate|raw }}','{{ datesDefaults.endMinDate|raw }}', '{{ datesDefaults.endMaxDate|raw }}');
+
+    /* Update Settings */
+    sampleGraph.updateSettings('{{ path('graph') }}');
+
+    /* Line Chart Init */
+    charts.stacked(
+        {{ stackedChartData['labels']|raw }},
+        {{ stackedChartData['data']|raw }},
+        {{ stackedChartData['options']|raw }},
+        {{ stackedChartAngle }});
+
+    /* DataTable */
+    var columns = [
+        { 'data': 'Topic Name', 'name': 'Topic Name', 'type': 'string', 'class': 'cell-left' },
+        { 'data': 'Topic ID', 'name': 'Topic ID', 'type': 'string', 'class': 'cell-left' },
+        { 'data': 'Category', 'name': 'Category', 'type': 'string', 'class': 'cell-center' },
+        { 'data': 'Source', 'name': 'Source', 'type': 'string', 'class': 'cell-center' },
+        {% for period in periods %}
+            { 'data': '{{ period.label }}', 'name': '{{ period.label }}', 'type': 'currency', 'class': 'cell-right' },
+        {% endfor %}
+    ];
+    dtable.graph(
+        columns,
+        '{{ path('graph_data') }}{{ path|raw }}',
+        '{{ path('graph_export') }}',
+        '{{ asset('bundles/samplecsv/images/loading-table.gif') }}'
+    );
+{% endblock %}
+
+{% block bodyScripts %}
+    <!-- DataTable JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.tableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.fixedHeader.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables_bootstrap.js') }}"></script>
+
+    <!-- jqPlot JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.jqplot.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.barRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.highlighter.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.pointLabels.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.dateAxisRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.canvasTextRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.canvasAxisTickRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/plugins/jqplot.categoryAxisRenderer.min.js') }}"></script>
+
+    <!-- Select JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/select2.min.js') }}"></script>
+
+    <!-- dataPicker JavaScript -->
+    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

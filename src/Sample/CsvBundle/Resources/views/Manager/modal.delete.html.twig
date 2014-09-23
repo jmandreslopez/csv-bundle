@@ -1,0 +1,25 @@
+    <!-- Turn Modal -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="configureLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="deleteConfirmationLabel">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1" style="text-align: center">
+                            <h4>Are you sure you want to <b>delete</b> the data for<br/>
+                                Type: <b><span id="delete-type"></span></b><br/>
+                                Source: <b><span id="delete-source"></span></b><br/>
+                                Period: <b><span id="delete-period"></span></b><br/></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button id="delete-yes" type="button" class="btn btn-primary" data-id="0">Yes</button>
+                    <button id="delete-no"  type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>

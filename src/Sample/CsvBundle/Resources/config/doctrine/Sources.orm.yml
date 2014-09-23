@@ -1,0 +1,39 @@
+Sample\CsvBundle\Entity\Sources:
+    type: entity
+    table: sources
+    repositoryClass: Sample\CsvBundle\Entity\SourcesRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        sourceTypeId:
+            type: integer
+            column: source_type_id
+        isActive:
+            type: boolean
+            column: is_active
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        sourceType:
+            targetEntity: SourceTypes
+            joinColumn:
+                name: source_type_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

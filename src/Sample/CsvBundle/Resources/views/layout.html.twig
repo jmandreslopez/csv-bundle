@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}Sample CSV{% endblock %}</title>
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/x-icon" href="{{ asset('/images/favicon.png') }}" />
+
+        <!-- Bootstrap core CSS -->
+        <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+        <!-- jQuery UI core CSS -->
+        <link href="{{ asset('jquery-ui/css/jquery-ui.min.css') }}" rel="stylesheet">
+
+        <!-- Specific page CSS files -->
+        {% block headStyles %}
+        {% endblock %}
+
+        <!-- Custom styles -->
+        <link href="{{ asset('bundles/samplecsv/css/styles.css') }}" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Specific page JavaScript files -->
+        {% block headScripts %}
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Unified Menu -->
+        {{ include('::menu.html.twig') }}
+
+        <div class="container">
+            <div class="page-menu csv-menu no-border-bottom">
+                {% include 'SampleCsvBundle::menu.html.twig' %}
+            </div>
+
+            {%block container %}
+            {% endblock %}
+        </div> <!-- /container -->
+
+        <!-- jQuery core JavaScript -->
+        <script type="text/javascript" src="{{ asset('jquery/jquery-1.10.2.min.js') }}"></script>
+
+        <!-- jQuery UI core JavaScript -->
+        <script type="text/javascript" src="{{ asset('jquery-ui/js/jquery-ui.js') }}"></script>
+
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <!-- Specific page JavaScript files -->
+        <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.noty.packaged.min.js') }}"></script>
+        {% block bodyScripts %}{% endblock %}
+        <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/scripts.js') }}"></script>
+
+        <!-- DocumentReady scripts -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                sample.layout('{{ path('status') }}','{{ path('graph') }}');
+
+                {% block documentReady %}
+                {% endblock %}
+            });
+        </script>
+    </body>
+</html>

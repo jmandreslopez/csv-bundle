@@ -1,0 +1,64 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block headStyles %}
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.tableTools.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/dataTables.fixedHeader.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.dataTables_bootstrap.css') }}">
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ asset('bundles/samplecsv/css/excanvas.js') }}"></script><![endif]-->
+{% endblock %}
+
+{% block container %}
+    <!-- Data Identificator -->
+    <div id="section-header" class="row">
+        <div class="col-md-12">
+            <h3>Data {{ source }} | {{ period }}</h3><br/>
+            <h5><b>Topic:</b> {{ params.topicId }}</h5>
+        </div>
+    </div>
+
+    <!-- DataTable Data -->
+    <div class="row">
+        <div id="datatable-data" class="col-md-12">
+            <table id="datatable" class="table table-condensed table-hover display cell-border">
+                <thead>
+                    <tr>
+                        {% for header in headers %}
+                            <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block documentReady %}
+    /* DataTable */
+    var params = {
+        'sourceId': '{{ params.sourceId }}',
+        'periodId': '{{ params.periodId }}',
+        'topicId': '{{ params.topicId }}'
+    };
+    var columns = [
+        {% for header in headers %}
+            { "data": "{{ header }}", "name": "{{ header }}"{% if header == "Topic ID" %}, "orderable": false{% endif %}{% if header == "Price" %}, "sortable": true{% else %}, "sortable": false{% endif %} },
+        {% endfor %}
+    ];
+    dtable.data(
+        params,
+        columns,
+        '{{ path('data') }}',
+        '{{ path('data_export') }}',
+        '{{ asset('bundles/samplecsv/images/loading-table.gif') }}'
+    );
+{% endblock %}
+
+{% block bodyScripts %}
+    <!-- DataTable JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.tableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/dataTables.fixedHeader.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.dataTables_bootstrap.js') }}"></script>
+{% endblock %}

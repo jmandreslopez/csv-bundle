@@ -1,0 +1,62 @@
+Sample\CsvBundle\Entity\Multiple:
+    type: entity
+    table: multiple
+    repositoryClass: Sample\CsvBundle\Entity\MultipleRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        sourceId:
+            type: integer
+            column: source_id
+        fileId:
+            type: integer
+            column: file_id
+        periodId:
+            type: integer
+            column: period_id
+        multipleId:
+            type: string
+            length: 255
+            column: multiple_id
+        topicId:
+            type: string
+            length: 255
+            column: topic_id
+        percentage:
+            type: float
+        isActive:
+            type: boolean
+            column: is_active
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        source:
+            targetEntity: Sources
+            joinColumn:
+                name: source_id
+                referencedColumnName: id
+        file:
+            targetEntity: Files
+            joinColumn:
+                name: file_id
+                referencedColumnName: id
+        period:
+            targetEntity: Periods
+            joinColumn:
+                name: period_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

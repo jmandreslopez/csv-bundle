@@ -1,0 +1,131 @@
+{% extends "SampleCsvBundle::layout.html.twig" %}
+
+{% block headStyles %}
+    <!-- jQuery FileUpload CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/samplecsv/css/jquery.fileupload.css') }}">
+{% endblock %}
+
+{% block container %}
+    <!-- Upload Settings -->
+    <div id="upload-settings" class="row">
+        <div class="col-md-12">
+            <form id="upload" role="form">
+                <div class="row settings">
+                    {{ form_label(form.type, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.type,
+                            {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-2 no-right no-left">
+                        <a id="multiple-admin" href="{{ path('multiple_dashboard') }}" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Multiple Admin">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row settings">
+                    {{ form_label(form.delimiter, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.delimiter,
+                            {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="row settings">
+                    {{ form_label(form.source, null,
+                        {'label_attr': {'class': 'col-md-2 control-label'}}) }}
+                    <div class="col-md-3">
+                        {{ form_widget(form.source,
+                            {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+                    <div class="col-md-2 no-right no-left">
+                        <a id="sources-admin" href="{{ path('sources_dashboard') }}" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Sources Admin">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row settings">
+                    <label class="col-md-2 control-label">Date:</label>
+                    <div class="col-md-2 no-right">
+                        {{ form_widget(form.period_month,
+                            {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+                    <div class="col-md-1 no-left">
+                        {{ form_widget(form.period_year, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Information -->
+    <div id="information" class="row">
+        <div class="col-md-6 align-left">
+            <p>You could upload as many files you want for the selected source.</p>
+        </div>
+        <div class="col-md-6 align-right">
+            <p><b>Note:</b> For larger files it will take more than an hour to process.</p>
+        </div>
+    </div>
+
+    <!-- Button & Progress -->
+    <div id="button-and-progress" class="row">
+        <div id="file-upload" class="col-md-1">
+            <span class="btn btn-success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add files</span>
+                <input id="fileupload" type="file" name="files[]" multiple data-form-data='{"delimiter": ",", "source": "2", "month": "Feb", "year": "14"}'>
+            </span>
+        </div>
+        <div id="file-progress" class="col-md-11">
+            <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-info"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Upload Elements -->
+    <div id="upload-elements" class="row">
+        <div class="col-md-12">
+            <div id="files" class="files">
+                <div class="row hidden">
+                    <div class="col-md-1">
+                        <button href="#" class="btn btn-default btn-sm btn-upload">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                    </div>
+                    <div class="col-md-11 file-row">
+                        <label class="control-label"><b>File:</b> </label>
+                        <span class="file-name"></span>
+                        <span class="notification hidden"><img src="{{ asset('bundles/samplecsv/images/loading-import.gif') }}" width="110" height="10"/></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return Button -->
+    <div class="row">
+        <div class="col-md-2">
+            <a href="{{ path('graph') }}" class="btn btn-primary">Go to Graph</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block documentReady %}
+    /* Tooltips */
+    sampleUpload.tooltips();
+
+    /* CSV Upload System */
+    sampleUpload.csv('{{ oneup_uploader_endpoint('csv') }}');
+{% endblock %}
+
+{% block bodyScripts %}
+    <!-- jQuery FileUpload JavaScript -->
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.fileupload-process.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/samplecsv/js/jquery.fileupload-validate.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,22 @@
+Sample\SecurityBundle\Entity\ADRole:
+    type: entity
+    table: ad_role
+    repositoryClass: Sample\SecurityBundle\Entity\ADRoleRepository
+    manyToMany:
+        users:
+            targetEntity: ADUser
+            mappedBy: roles
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 30
+        role:
+            type: string
+            length: 20
+    lifecycleCallbacks: {  }

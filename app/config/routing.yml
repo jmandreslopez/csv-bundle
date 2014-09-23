@@ -1,0 +1,14 @@
+sample_csv:
+    resource: "@SampleCsvBundle/Resources/config/routing.yml"
+    prefix:   /
+
+sample_security:
+    resource: "@SampleSecurityBundle/Resources/config/routing.yml"
+    prefix: /
+
+AvroCsvBundle:
+    resource: "@AvroCsvBundle/Resources/config/routing.yml"
+
+oneup_uploader:
+    resource: .
+    type: uploader

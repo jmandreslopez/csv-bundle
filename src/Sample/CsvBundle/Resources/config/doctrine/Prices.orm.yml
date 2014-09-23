@@ -1,0 +1,51 @@
+Sample\CsvBundle\Entity\Prices:
+    type: entity
+    table: prices
+    repositoryClass: Sample\CsvBundle\Entity\PricesRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        generalId:
+            type: integer
+            column: general_id
+        periodId:
+            type: integer
+            column: period_id
+        price:
+            type: float
+            precision: 10
+            scale: 2
+        status:
+            type: string
+            length: 100
+        isActive:
+            type: boolean
+            column: is_active
+        createdAt:
+            type: datetime
+            column: created_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+        modifiedAt:
+            type: datetime
+            column: modified_at
+            columnDefinition: TIMESTAMP
+            nullable: true
+    manyToOne:
+        general:
+            targetEntity: General
+            joinColumn:
+                name: general_id
+                referencedColumnName: id
+        period:
+            targetEntity: Periods
+            joinColumn:
+                name: period_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ timestamps ]
+        preUpdate: [ timestamps ]

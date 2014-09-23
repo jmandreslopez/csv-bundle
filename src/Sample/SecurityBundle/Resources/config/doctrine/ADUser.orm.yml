@@ -1,0 +1,27 @@
+Sample\SecurityBundle\Entity\ADUser:
+    type: entity
+    table: ad_user
+    repositoryClass: Sample\SecurityBundle\Entity\ADUserRepository
+    manyToMany:
+        roles:
+            targetEntity: ADRole
+            inversedBy: users
+            joinTable:
+                name: aduser_role
+                joinColumns:
+                    aduser_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    role_id:
+                        referencedColumnName: id
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }
